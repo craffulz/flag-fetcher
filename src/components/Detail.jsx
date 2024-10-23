@@ -1,8 +1,10 @@
 import arrow from "../assets/arrow-back.svg";
 import { Link } from "react-router-dom";
 import useStore from "../store/store";
+import { useEffect, useState } from "react";
 const Detail = () => {
-  const { countryDetail } = useStore();
+  const { countryDetail, countriesFiltered, setCountryDetail } = useStore();
+  const [borderCountries, setBorderCountries] = useState([]);
   const {
     flags,
     name,
@@ -13,12 +15,29 @@ const Detail = () => {
     tld,
     currencies,
     languages,
+    borders,
   } = countryDetail;
   console.log(countryDetail);
 
   const [currency] = Object.values(currencies);
-  console.log(currency);
+
   const popu = new Intl.NumberFormat("en-US").format(population);
+
+  const native = Object.values(name.nativeName)[0].common;
+
+  useEffect(() => {
+    // Mapea los objetos de 'borders' para obtener el campo cca3
+    if (borders && countriesFiltered) {
+      const foundCountries = borders.map((border) => {
+        return countriesFiltered.find((country) => country.cca3 === border);
+      });
+      // Filtra los que son undefined
+
+      setBorderCountries(foundCountries);
+    }
+  }, [borders, countriesFiltered]);
+
+  console.log(borderCountries);
 
   return (
     <div
@@ -27,7 +46,7 @@ const Detail = () => {
     >
       <div id="back" className="">
         <Link to="/">
-          <button className="flex flex-row gap-3 text-lg rounded-md shadow-l py-1 px-6 bg-lightElement dark:bg-darkElement text-lightText dark:text-darkText font-sans items-center">
+          <button className="flex flex-row gap-3 text-lg rounded-md drop-shadow-xl shadow-gray-500 py-1 px-6 bg-lightElement dark:bg-darkElement text-lightText dark:text-darkText font-sans items-center">
             <img src={arrow} alt="icon arrow" /> Back
           </button>
         </Link>
@@ -35,12 +54,12 @@ const Detail = () => {
 
       <div
         id="data"
-        className="flex flex-col px-9 md:px-0 md:flex-row gap-32  text-lightText dark:text-darkText h-[750px] overflow-hidden  bg-lightBackground dark:bg-darkBackground items-center md:items-stretch"
+        className="flex flex-col px-9 md:px-0 md:flex-row gap-32  text-lightText dark:text-darkText lg:h-[550px] overflow-hidden  bg-lightBackground dark:bg-darkBackground items-center md:items-stretch justify-around"
       >
-        <div id="image" className="object-cover md:w-[700px]">
-          <img src={flags.svg} alt={flags.alt} />
+        <div id="image" className=" md:w-[700px] self-center">
+          <img src={flags.svg} alt={flags.alt} className="object-contain" />
         </div>
-        <div id="details" className="flex flex-col gap-y-8 py-3 ">
+        <div id="details" className="flex flex-col gap-y-8 py-3 justify-center">
           <div id="title" className="flex font-bold font-sans text-4xl">
             <h1>{name.official}</h1>
           </div>
@@ -52,7 +71,7 @@ const Detail = () => {
               Native Name:
               <span className="font-sans font-thin">
                 {" "}
-                {name.nativeName.eng.common}
+                {native ? native : "no-data"}
               </span>
             </span>
             <span className="font-bold font-sans">
@@ -89,6 +108,27 @@ const Detail = () => {
               Top Level Domain:
               <span className="font-sans font-thin"> {tld}</span>
             </span>
+          </div>
+          <div id="borders" className="flex flex-col gap-y-6">
+            <span className="flex font-bold font-sans">Borders:</span>
+            <div
+              id="bord"
+              className="grid grid-cols-2 md:flex md:flex-wrap gap-4 items-center md:w-[600px]"
+            >
+              {borders
+                ? borderCountries.map((value, index) => {
+                    return (
+                      <button
+                        key={index}
+                        className="w-[120px] px-4 py-2 justify-center items-center rounded-md  shadow-md bg-lightElement dark:bg-darkElement transition-all duration-500 hover:scale-105"
+                        onClick={() => setCountryDetail(value)}
+                      >
+                        {value.name.common}
+                      </button>
+                    );
+                  })
+                : "no-data"}
+            </div>
           </div>
         </div>
       </div>

@@ -34,8 +34,7 @@ const SearchAndFilter = () => {
       )
     );
   };
-  console.log("CountriesFiltered: \n ", countriesFiltered);
-  console.log("Countries: \n", countries);
+
   return (
     <div
       id="searchFilter"

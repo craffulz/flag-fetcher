@@ -15,7 +15,7 @@ const useStore = create((set) => {
   setDarkModeClass(initialDarkMode);
 
   return {
-    countryDetail: null,
+    countryDetail: {},
     setCountryDetail: (country) => {
       set({ countryDetail: country });
     },
@@ -33,6 +33,7 @@ const useStore = create((set) => {
         return set({ countries: field });
       }
     },
+
     countriesFiltered: [],
     setCountriesFiltered: async (field) => {
       if (typeof field === "string") {

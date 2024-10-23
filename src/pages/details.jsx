@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import Detail from "../components/Detail";
-const details = () => {
+
+const Details = () => {
   return (
     <>
       <div
@@ -19,4 +20,4 @@ const details = () => {
   );
 };
 
-export default details;
+export default Details;

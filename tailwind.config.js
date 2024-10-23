@@ -12,7 +12,7 @@ export default {
         darkElement: "hsl(209, 23%, 22%)",
         darkText: "hsl(0, 0%, 100%)",
 
-        lightBackground: "hsl(0, 0%, 90%)",
+        lightBackground: "hsl(0, 0%, 98%)",
         lightElement: "hsl(0, 0%, 100%)",
         lightText: "hsl(200, 15%, 8%)",
       },
