@@ -1,29 +1,20 @@
 import Card from "../components/Card";
 import Navbar from "../components/Navbar";
 import SearchAndFilter from "../components/SearchAndFilter";
-import fetcher from "../helpers/fetcher";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useStore from "../store/store";
 
 const Home = () => {
-  const [countries, setCountries] = useState([{}]);
-  const [error, setError] = useState(null);
+  const { countries, setCountries, setCountriesFiltered } = useStore();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetcher('/all'); // Llama a tu función fetcher
-
-        setCountries(data);
-        // Actualiza el estado con los datos recibidos
-      } catch (error) {
-        setError(error.message); // Maneja el error si ocurre
-      }
+    const initializeStore = () => {
+      setCountries("all");
+      setCountriesFiltered("all");
     };
 
-    fetchData(); // Ejecuta la función dentro de useEffect
-  }, []);
-
-  console.log(error, countries);
+    initializeStore();
+  }, [setCountries, setCountriesFiltered]);
 
   return (
     <div
@@ -38,13 +29,13 @@ const Home = () => {
         <div id="search">
           <SearchAndFilter />
         </div>
-        <div id="couuntries-grid" className="flex justify-center">
+        <div id="countries-grid" className="flex justify-center">
           {" "}
           <div
             id="countries"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-20"
           >
-            {countries.length > 1 &&
+            {countries.length >= 1 &&
               countries.map((value, index) => (
                 <Card value={value} key={index} />
               ))}

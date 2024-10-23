@@ -1,11 +1,7 @@
 import { create } from "zustand";
 import fetcher from "../helpers/fetcher";
-
-const useStore = create(async (set) => {
+const useStore = create((set) => {
   const initialDarkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
-
-  const initialCountries = await fetcher("/all");
-
   // Setear la clase 'dark' en el <html>
   const setDarkModeClass = (darkMode) => {
     if (darkMode) {
@@ -19,11 +15,38 @@ const useStore = create(async (set) => {
   setDarkModeClass(initialDarkMode);
 
   return {
-    countries: initialCountries,
-    setCountries: async (field) => {
-      const newCountries = await fetcher(field);
-      set({ countries: newCountries });
+    countryDetail: null,
+    setCountryDetail: (country) => {
+      set({ countryDetail: country });
     },
+
+    countries: [],
+    setCountries: async (field) => {
+      if (typeof field === "string") {
+        try {
+          const response = await fetcher(field);
+          if (response.length > 1) return set({ countries: response });
+        } catch (error) {
+          console.log("Error: ", error);
+        }
+      } else {
+        return set({ countries: field });
+      }
+    },
+    countriesFiltered: [],
+    setCountriesFiltered: async (field) => {
+      if (typeof field === "string") {
+        try {
+          const response = await fetcher(field);
+          if (response.length > 1) return set({ countriesFiltered: response });
+        } catch (error) {
+          console.log("Error: ", error);
+        }
+      } else {
+        return set({ countriesFiltered: field });
+      }
+    },
+
     darkMode: initialDarkMode, // Estado inicial
     toggleDarkMode: () => {
       set((state) => {
@@ -35,6 +58,5 @@ const useStore = create(async (set) => {
     },
   };
 });
-
 
 export default useStore;

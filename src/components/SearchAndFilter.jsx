@@ -1,15 +1,41 @@
 import search from "../assets/search.svg";
 import searchDark from "../assets/searchDark.svg";
 import useStore from "../store/store";
-import { useState } from "react";
 
 const SearchAndFilter = () => {
-  const { darkMode } = useStore();
-  const [selected, setSelected] = useState();
+  const {
+    darkMode,
+    setCountries,
+    countries,
+    countriesFiltered,
+    setCountriesFiltered,
+  } = useStore();
 
   const handleSelection = (event) => {
-    setSelected(event.target.value);
-  }
+    console.log("aqui tambn?");
+    const selectedValue = event.target.value;
+    selectedValue
+      ? setCountries(`region/${selectedValue}`)
+      : setCountries("all");
+    setCountriesFiltered(countries);
+  };
+
+  const handleSearch = (event) => {
+    const searchValue = event.target.value.toUpperCase();
+    console.log(searchValue);
+    if (searchValue === "") {
+      setCountries(countriesFiltered);
+      return;
+    }
+
+    setCountries(
+      countriesFiltered.filter(({ name }) =>
+        name.common.toUpperCase().startsWith(searchValue)
+      )
+    );
+  };
+  console.log("CountriesFiltered: \n ", countriesFiltered);
+  console.log("Countries: \n", countries);
   return (
     <div
       id="searchFilter"
@@ -24,6 +50,7 @@ const SearchAndFilter = () => {
           type="text"
           className="bg-lightElement dark:bg-darkElement outline-none"
           placeholder="Search for a country..."
+          onChange={handleSearch}
         />
       </div>
 
@@ -33,10 +60,9 @@ const SearchAndFilter = () => {
             id="region"
             name="region"
             className=" w-full p-3 bg-lightElement dark:bg-darkElement  rounded-md focus:outline-none"
-            value={selected}
-            onChange={() => handleSelection()}
+            onChange={handleSelection}
           >
-            <option disabled selected hidden>
+            <option selected hidden>
               Filter by Region
             </option>
             <option value="africa">Africa</option>
@@ -44,6 +70,7 @@ const SearchAndFilter = () => {
             <option value="europe">Europe</option>
             <option value="asia">Asia</option>
             <option value="oceania">Oceania</option>
+            <option value="">All</option>
           </select>
         </div>
       </div>
