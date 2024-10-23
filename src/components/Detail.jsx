@@ -42,9 +42,9 @@ const Detail = () => {
   return (
     <div
       id="body"
-      className="flex flex-col bg-lightBackground dark:bg-darkBackground font-nunito overflow-hidden gap-y-10"
+      className="flex flex-col  bg-lightBackground dark:bg-darkBackground font-nunito overflow-hidden gap-y-10"
     >
-      <div id="back" className="">
+      <div id="back" className="px-7 md:px-0">
         <Link to="/">
           <button className="flex flex-row gap-3 text-lg rounded-md drop-shadow-xl shadow-gray-500 py-1 px-6 bg-lightElement dark:bg-darkElement text-lightText dark:text-darkText font-sans items-center">
             <img src={arrow} alt="icon arrow" /> Back
