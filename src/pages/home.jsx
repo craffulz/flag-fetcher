@@ -29,7 +29,7 @@ const Home = () => {
         <div id="search">
           <SearchAndFilter />
         </div>
-        <div id="countries-grid" className="flex flex-col">
+        <div id="countries-grid" className="flex flex-row">
           <div id="countries" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
             {countries.length >= 1 &&
               countries.map((value, index) => (
