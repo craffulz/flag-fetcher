@@ -29,8 +29,8 @@ const Home = () => {
         <div id="search">
           <SearchAndFilter />
         </div>
-        <div id="countries-grid" className="">
-          <div id="countries" className="">
+        <div id="countries-grid" className="flex flex-col">
+          <div id="countries" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
             {countries.length >= 1 &&
               countries.map((value, index) => (
                 <Card value={value} key={index} />
